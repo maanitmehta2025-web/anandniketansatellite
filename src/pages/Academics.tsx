@@ -40,7 +40,7 @@ export default function Academics() {
       </Section>
 
       {/* Methodology */}
-      <Section className="bg-[#f5f9fc]">
+      <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <SectionHeading
@@ -50,10 +50,7 @@ export default function Academics() {
             />
             <div className="mt-8 space-y-5">
               {methodology.map((m) => (
-                <div
-                  key={m.stage}
-                  className="rounded-2xl border border-black/5 bg-white p-5 shadow-soft"
-                >
+                <div key={m.stage} className="glass-card p-5">
                   <p className="text-xs font-semibold uppercase tracking-wider text-brand-blue">
                     {m.stage} · {m.grades}
                   </p>
@@ -62,11 +59,13 @@ export default function Academics() {
               ))}
             </div>
           </div>
-          <img
-            src={elementImg.vaayu}
-            alt="Students learning at Anand Niketan"
-            className="h-96 w-full rounded-2xl object-cover shadow-soft"
-          />
+          <div className="glass-card overflow-hidden p-2">
+            <img
+              src={elementImg.vaayu}
+              alt="Students learning at Anand Niketan"
+              className="h-96 w-full rounded-2xl object-cover"
+            />
+          </div>
         </div>
       </Section>
 

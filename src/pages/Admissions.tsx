@@ -37,8 +37,8 @@ export default function Admissions() {
       </Section>
 
       {/* Enquiry CTA */}
-      <Section className="bg-[#f5f9fc]">
-        <div className="grid items-center gap-10 rounded-3xl bg-brand-blue p-8 text-white sm:p-12 lg:grid-cols-2">
+      <Section>
+        <div className="grid items-center gap-10 rounded-3xl bg-brand-blue p-8 text-white shadow-glass sm:p-12 lg:grid-cols-2">
           <div>
             <h2 className="text-3xl font-bold">Ready to take the first step?</h2>
             <p className="mt-3 text-white/85">

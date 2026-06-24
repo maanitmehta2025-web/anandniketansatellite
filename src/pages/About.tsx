@@ -17,11 +17,13 @@ export default function About() {
       {/* Vision */}
       <Section>
         <div className="grid items-center gap-12 lg:grid-cols-2">
-          <img
-            src={elementImg.prithvi}
-            alt="Anand Niketan campus life"
-            className="h-80 w-full rounded-2xl object-cover shadow-soft"
-          />
+          <div className="glass-card overflow-hidden p-2">
+            <img
+              src={elementImg.prithvi}
+              alt="Anand Niketan campus life"
+              className="h-80 w-full rounded-2xl object-cover"
+            />
+          </div>
           <div>
             <SectionHeading
               eyebrow="Our vision"
@@ -44,7 +46,7 @@ export default function About() {
       </Section>
 
       {/* Aims */}
-      <Section className="bg-[#f5f9fc]">
+      <Section>
         <SectionHeading
           eyebrow="What we set out to do"
           title="Our aims"
@@ -54,7 +56,7 @@ export default function About() {
           {aims.map((a) => (
             <div
               key={a}
-              className="flex items-start gap-3 rounded-2xl border border-black/5 bg-white p-5 shadow-soft"
+              className="glass-card flex items-start gap-3 p-5"
             >
               <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-brand-green/20 text-brand-green">
                 <Check size={16} />

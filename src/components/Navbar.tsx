@@ -19,14 +19,22 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header
-      className={`sticky top-0 z-50 transition-all ${
-        scrolled ? "bg-white/95 shadow-soft backdrop-blur" : "bg-white"
-      }`}
-    >
-      <nav className="wrap flex items-center justify-between py-3">
+    <header className="sticky top-0 z-50 px-4 sm:px-6">
+      <nav
+        className={`mx-auto flex w-full max-w-wrap items-center justify-between rounded-full border border-white/60 bg-white/60 px-4 backdrop-blur-xl backdrop-saturate-150 transition-all duration-500 sm:px-6 ${
+          scrolled
+            ? "my-2 py-1.5 shadow-glass"
+            : "my-4 py-3 shadow-soft"
+        }`}
+      >
         <Link to="/" className="flex items-center gap-3" aria-label="Anand Niketan home">
-          <img src={img.logo} alt="Anand Niketan" className="h-12 w-auto" />
+          <img
+            src={img.logo}
+            alt="Anand Niketan"
+            className={`w-auto transition-all duration-500 ${
+              scrolled ? "h-9" : "h-12"
+            }`}
+          />
         </Link>
 
         <ul className="hidden items-center gap-1 lg:flex">
@@ -64,8 +72,8 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="border-t border-black/5 bg-white lg:hidden">
-          <ul className="wrap flex flex-col gap-1 py-4">
+        <div className="glass-card mt-2 lg:hidden">
+          <ul className="flex flex-col gap-1 p-4">
             {navLinks.map((link) => (
               <li key={link.to}>
                 <NavLink

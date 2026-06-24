@@ -1,3 +1,5 @@
+import Reveal from "./Reveal";
+
 type Props = {
   eyebrow?: string;
   title: string;
@@ -7,28 +9,42 @@ type Props = {
 
 export default function PageHero({ eyebrow, title, subtitle, image }: Props) {
   return (
-    <section className="relative overflow-hidden bg-brand-dark">
-      <img
-        src={image}
-        alt=""
-        aria-hidden
-        className="absolute inset-0 h-full w-full object-cover opacity-25"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-dark via-brand-dark/85 to-brand-blue/40" />
-      <div className="wrap relative py-20 text-white sm:py-24">
-        {eyebrow && (
-          <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-            {eyebrow}
-          </span>
-        )}
-        <h1 className="mt-3 max-w-3xl text-4xl font-extrabold sm:text-5xl">
-          {title}
-        </h1>
-        {subtitle && (
-          <p className="mt-4 max-w-2xl text-base text-white/80 sm:text-lg">
-            {subtitle}
-          </p>
-        )}
+    <section className="relative">
+      <div className="wrap py-20 sm:py-24">
+        <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            {eyebrow && (
+              <Reveal variant="scale">
+                <span className="glass inline-block rounded-full px-3.5 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-brand-blue">
+                  {eyebrow}
+                </span>
+              </Reveal>
+            )}
+            <Reveal delay={80}>
+              <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight text-brand-ink sm:text-6xl">
+                {title}
+              </h1>
+            </Reveal>
+            {subtitle && (
+              <Reveal delay={150}>
+                <p className="mt-5 max-w-2xl text-base leading-relaxed text-brand-ink/70 sm:text-lg">
+                  {subtitle}
+                </p>
+              </Reveal>
+            )}
+          </div>
+
+          <Reveal variant="right" delay={120}>
+            <div className="glass-card overflow-hidden p-2">
+              <img
+                src={image}
+                alt=""
+                aria-hidden
+                className="h-56 w-full rounded-2xl object-cover sm:h-72"
+              />
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );

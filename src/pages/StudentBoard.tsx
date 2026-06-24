@@ -28,13 +28,15 @@ export default function StudentBoard() {
         </div>
       </Section>
 
-      <Section className="bg-[#f5f9fc]">
+      <Section>
         <div className="grid items-center gap-10 lg:grid-cols-2">
-          <img
-            src={img.resultIcse}
-            alt="ICSE results 2026"
-            className="h-80 w-full rounded-2xl object-cover shadow-soft"
-          />
+          <div className="glass-card overflow-hidden p-2">
+            <img
+              src={img.resultIcse}
+              alt="ICSE results 2026"
+              className="h-80 w-full rounded-2xl object-cover"
+            />
+          </div>
           <div>
             <SectionHeading
               eyebrow="Achievements"

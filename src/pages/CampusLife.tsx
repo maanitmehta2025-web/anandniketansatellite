@@ -42,7 +42,7 @@ export default function CampusLife() {
       </Section>
 
       {/* Excursions + Ants Studio */}
-      <Section className="bg-[#f5f9fc]">
+      <Section>
         <div className="grid gap-6 md:grid-cols-2">
           <Card>
             <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-blue/10 text-brand-blue">

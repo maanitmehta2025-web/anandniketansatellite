@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,9 +7,11 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background: #ffffff;
   }
   body {
-    @apply bg-white text-brand-ink font-sans antialiased;
+    /* transparent so the fixed Aurora mesh shows through every section */
+    @apply bg-transparent text-brand-ink font-sans antialiased;
   }
   h1, h2, h3, h4 {
     @apply font-display tracking-tight;
@@ -32,6 +34,10 @@
   .btn-outline {
     @apply btn border border-white/70 text-white hover:bg-white hover:text-brand-blue;
   }
+  /* Frosted glass ghost button — secondary CTA */
+  .btn-ghost {
+    @apply btn border border-white/60 bg-white/40 text-brand-ink backdrop-blur-md hover:bg-white/70 hover:shadow-soft;
+  }
   .eyebrow {
     @apply inline-block text-xs font-bold uppercase tracking-[0.18em] text-brand-blue;
   }
@@ -49,25 +55,209 @@
   .card-hover {
     @apply transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_24px_60px_-18px_rgba(11,58,82,0.35)];
   }
+
+  /* ---- Liquid glass ---- */
+  /* Frosted translucent panel with a glossy top highlight + soft inner ring.
+     Use on dark/photo backgrounds for the Apple-style "liquid glass" look. */
+  .glass {
+    @apply relative border border-white/25 bg-white/[0.08] backdrop-blur-3xl backdrop-saturate-[1.8];
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.12),
+      0 12px 44px -10px rgba(11, 58, 82, 0.32);
+  }
+  /* Lighter variant for use on white / light surfaces */
+  .glass-light {
+    @apply relative border border-white/60 bg-white/50 backdrop-blur-2xl backdrop-saturate-[1.8];
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.8),
+      0 14px 50px -12px rgba(11, 58, 82, 0.22);
+  }
+  /* Premium liquid-glass card — the workhorse surface for the redesign.
+     Translucent white fill + heavy blur + crisp white inner edge, floating
+     over the Aurora mesh. */
+  .glass-card {
+    @apply relative rounded-3xl border border-white/60 bg-white/50 backdrop-blur-3xl backdrop-saturate-[1.8];
+    box-shadow: theme("boxShadow.glass"),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+  }
+  /* Top glass-edge highlight for cards */
+  .glass-card::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px rounded-t-3xl;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.9),
+      transparent
+    );
+  }
+
+  /* Glossy specular sheen that travels across a glass surface.
+     Requires the parent to be `relative overflow-hidden`. */
+  .glass-sheen::before {
+    content: "";
+    @apply pointer-events-none absolute inset-0 rounded-[inherit];
+    background: linear-gradient(
+      130deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.5) 18%,
+      transparent 42%
+    );
+    background-size: 250% 250%;
+    animation: glass-sheen 7s ease-in-out infinite;
+  }
 }
 
 @layer utilities {
-  /* Scroll-reveal: starts hidden, .is-visible plays it in */
+  /* Scroll-reveal: starts hidden, .is-visible plays it in.
+     A spring-like easing + blur give the liquid-glass "settle" feel. */
   .reveal {
     opacity: 0;
     transform: translateY(28px);
-    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: blur(8px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform, filter;
+  }
+  /* Directional / scale variants — set via Reveal's `variant` prop */
+  .reveal-left {
+    transform: translateX(-40px);
+  }
+  .reveal-right {
+    transform: translateX(40px);
+  }
+  .reveal-scale {
+    transform: scale(0.92);
+  }
+  .reveal-blur {
+    transform: none;
+    filter: blur(16px);
   }
   .reveal.is-visible {
     opacity: 1;
     transform: none;
+    filter: none;
   }
   .delay-0 { animation-delay: 0ms; transition-delay: 0ms; }
   .delay-75 { animation-delay: 75ms; transition-delay: 75ms; }
   .delay-150 { animation-delay: 150ms; transition-delay: 150ms; }
   .delay-300 { animation-delay: 300ms; transition-delay: 300ms; }
   .delay-500 { animation-delay: 500ms; transition-delay: 500ms; }
+}
+
+@keyframes glass-sheen {
+  0% { background-position: 200% 0; }
+  60%, 100% { background-position: -120% 0; }
+}
+
+/* ---- Site-wide liquid-glass film ----
+   A fixed, full-viewport pane that sits above all content (but below the
+   cursor + scroll bar). A faint frosted blur + travelling specular sheen +
+   top/bottom edge highlights make the WHOLE site read as if viewed through
+   a single sheet of liquid glass. Pointer-events off so it never blocks UI. */
+.glass-film {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  /* glossy diagonal sheen + soft edge brightening */
+  background: linear-gradient(
+      130deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 18%,
+      rgba(255, 255, 255, 0) 40%
+    ),
+    radial-gradient(
+      120% 100% at 50% -10%,
+      rgba(255, 255, 255, 0.18),
+      rgba(255, 255, 255, 0) 55%
+    );
+  background-size: 250% 250%, 100% 100%;
+  animation: glass-sheen 14s ease-in-out infinite;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
+    inset 0 -60px 90px -60px rgba(11, 58, 82, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass-film {
+    animation: none;
+  }
+}
+
+/* ---- Refracting glass-ball cursor ---- */
+.glass-cursor-defs {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+.glass-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  /* The lens: bend the backdrop with the SVG filter, then add a touch of
+     brightness/contrast so the glass reads as glass. */
+  -webkit-backdrop-filter: url(#glass-cursor-filter) brightness(1.08) contrast(1.05);
+  backdrop-filter: url(#glass-cursor-filter) brightness(1.08) contrast(1.05);
+  /* Top-left specular glint + soft body */
+  background: radial-gradient(
+    circle at 32% 28%,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.08) 42%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 6px 9px 16px rgba(255, 255, 255, 0.4),
+    inset -7px -9px 16px rgba(11, 58, 82, 0.18),
+    0 10px 26px -8px rgba(11, 58, 82, 0.4);
+}
+/* Chromatic aberration at the rim — red bleeds one way, cyan the other */
+.glass-cursor::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  box-shadow: inset 2px 0 3px rgba(255, 40, 90, 0.28),
+    inset -2px 0 3px rgba(0, 180, 255, 0.28);
+}
+/* Replace the native arrow with the ball on fine pointers */
+@media (pointer: fine) {
+  html.glass-cursor-on,
+  html.glass-cursor-on * {
+    cursor: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass-cursor,
+  .glass-cursor-defs {
+    display: none;
+  }
+}
+
+/* Scroll progress bar — fixed glass rail across the very top of the page */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 60;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    theme("colors.brand.green"),
+    theme("colors.brand.blue"),
+    theme("colors.brand.green")
+  );
+  background-size: 200% auto;
+  box-shadow: 0 0 12px -1px rgba(0, 137, 205, 0.6);
+  animation: gradient-x 8s ease infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -80,5 +270,9 @@
   .reveal {
     opacity: 1;
     transform: none;
+    filter: none;
+  }
+  .scroll-progress {
+    display: none;
   }
 }

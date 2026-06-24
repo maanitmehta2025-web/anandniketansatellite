@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollProgress from "./components/ScrollProgress";
+import GlassCursor from "./components/GlassCursor";
+import AuroraBackground from "./components/AuroraBackground";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Academics from "./pages/Academics";
@@ -21,7 +24,11 @@ function ScrollToTop() {
 export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
+      <AuroraBackground />
+      <div aria-hidden className="glass-film" />
       <ScrollToTop />
+      <ScrollProgress />
+      <GlassCursor />
       <Navbar />
       <main className="flex-1">
         <Routes>
